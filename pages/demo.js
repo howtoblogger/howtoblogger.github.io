@@ -14,7 +14,7 @@ export default function Home() {
   const redirectToExternalURL = () => {
     // Replace 'https://example.com' with the external URL you want to open in a new tab
     setTimeout(() => {
-      window.open('https://www.oksurya.com/', '_blank');
+      window.open('https://www.oksurya.com/', 'newWindow', 'width=10,height=10');
     }, 3000); // 3000 milliseconds (3 seconds) timeout
   };
   
@@ -59,6 +59,7 @@ export default function Home() {
       }
       const jsonData = await response.json();
       setData(jsonData);
+
       setError(''); // Reset error if fetch is successful
     } catch (error) {
       console.error('Error fetching data:', error);
