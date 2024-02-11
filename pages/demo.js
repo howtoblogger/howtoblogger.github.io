@@ -70,6 +70,7 @@ export default function Home() {
         
               <div > 
                 {data.photo_url}
+                <a href={`${data.photo_url}&dl=1`}>Download File Server 1</a>
 
                 <a href={`/api/img?save=${encodeURIComponent(data.photo_url)}&filename=${data.author.username}`}>Download File</a>
                 <img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} width={500} height={500} />
@@ -81,13 +82,15 @@ export default function Home() {
     <p>ID: {item.node.id}</p> 
     {item.node.__typename === "XDTGraphVideo" ? (
       <div>
-        <a href={item.node.video_url} >Download Video</a>
+        <video width="320" height="240" controls>
+  <source src={item.node.video_url} type="video/mp4"/>
+</video>
+<a href={`${item.node.video_url}&dl=1`}>Download Video</a>
         {item.node.accessibility_caption}
       </div>
     ) : (
       <div>
 
-    <ImageDownloader imageUrl={item.node.display_url} />
 
         <a href={item.node.display_url} >Download Image</a>
         {item.node.accessibility_caption}
