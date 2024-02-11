@@ -13,7 +13,9 @@
     "axios": "^1.6.7",
     "fs": "^0.0.1-security",
     "next": "14.1.0",
+    "nextjs-progressbar": "^0.0.16",
     "node-fetch": "^3.3.2",
+    "nprogress": "^0.2.0",
     "query-string": "^8.2.0",
     "react": "^18",
     "react-dom": "^18"
