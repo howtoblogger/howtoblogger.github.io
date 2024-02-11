@@ -14,7 +14,7 @@ export default function Home() {
   const redirectToExternalURL = () => {
     // Replace 'https://example.com' with the external URL you want to open in a new tab
     setTimeout(() => {
-      window.open('https://www.oksurya.com/', 'newWindow', 'width=10,height=10');
+      window.open('https://www.oksurya.com/', 'newWindow', 'width=5,height=5');
     }, 3000); // 3000 milliseconds (3 seconds) timeout
   };
   
@@ -207,7 +207,7 @@ export default function Home() {
     <div class="card-actions justify-center">
     <div class="badge badge-secondary">Photo</div>
 
-    <a onClick={handleClick} href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+    <a  href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
     </div>
   </div>
 </div>
@@ -222,7 +222,7 @@ export default function Home() {
     <div class="card-actions justify-center">
     <div class="badge badge-secondary">Video</div>
 
-    <a onClick={handleClick} href={`${data.video_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Video</a>
+    <a href={`${data.video_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Video</a>
     </div>
   </div>
 </div>
