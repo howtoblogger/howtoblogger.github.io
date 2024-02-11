@@ -60,7 +60,7 @@ export default function Photo() {
     // Extract photoId from the entered URL
     const url = document.getElementById('instaurl').value;
 
-    const matches = url.match(/instagram\.com\/(reel|p|[\w-]+)\/([^/]+)/);
+    const matches = e.match(/instagram\.com\/(reel|p|[\w-]+)\/([^/]+)/);
     if (matches && matches.length > 1) {
       setPhotoId(matches[1]);
       setError('');

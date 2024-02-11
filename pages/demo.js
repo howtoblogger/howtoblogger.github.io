@@ -8,7 +8,27 @@ export default function Home() {
   const [data, setData] = useState(null);
   const [shortcode, setShortcode] = useState('');
   const [error, setError] = useState('');
+  const [pastedText, setPastedText] = useState('');
 
+  const ClipboardBtn = () => {
+    if (!navigator.clipboard || !navigator.clipboard.readText) {
+      setError('Longpress and paste URL');
+      return;
+    }
+    navigator.clipboard.readText().then((text) => {
+      setPastedText(text);
+      const matches = url.match(/(?:\/(?:p|reel|[\w-]+)\/)([A-Za-z0-9-_]+)/);
+      if (matches && matches.length > 1) {
+        setShortcode(matches[1]);
+        setError('');
+      } else {
+        setError('');
+      }
+    }).catch((error) => {
+      console.error('Failed to read clipboard contents: ', error);
+    });
+  };
+  
   const title = 'Instagram Photo Download';
   const description = 'Save Instagram Photos quickly and easily with our efficient downloader tool.';
 
@@ -35,7 +55,9 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const match = url.match(/instagram\.com\/(reel|p|[\w-]+)\/([^/]+)/);
+    
+    const regex = /(?:\/(?:p|reel|[\w-]+)\/)([A-Za-z0-9-_]+)/;
+    const match = pastedText.match(regex);
     if (match) {
       setShortcode(match[1]);
     } else {
@@ -58,16 +80,17 @@ export default function Home() {
       <div className="relative">
       <form onSubmit={handleSubmit}>
          <input
-  className="input input-lg w-full input-bordered"
+  className=" input input-lg w-full input-bordered"
   type="text"
-  value={url}
+  value={pastedText}
+  onFocus={ClipboardBtn}
   onChange={(e) => {
     setUrl(e.target.value);
   }}
   placeholder="Enter Instagram URL"
 />
 
-          <button className='btn btn-primary btn-lg btn-wide' type="submit">Download</button>
+          <button className='mt-4 btn btn-primary btn-lg btn-wide' type="submit">Download</button>
         </form>
         </div>
         </Hero>
@@ -80,7 +103,7 @@ export default function Home() {
        <div > 
          {data.photo_url}
          <a href={`${data.photo_url}&dl=1`}>Download File Server 1</a>
-         <img src={`/api/img?save=${encodeURIComponent(data.author.profile_pic_url)}`} width={150} height={150} />
+         <img src={`/api/img?save=${encodeURIComponent(data.author.profile_pic_url)}`} width={500} height={500} />
 
          <a href={`/api/img?save=${encodeURIComponent(data.photo_url)}&filename=${data.author.username}`}>Download File</a>
          <img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} width={500} height={500} />
