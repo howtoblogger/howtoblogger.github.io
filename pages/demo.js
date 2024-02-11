@@ -10,6 +10,7 @@ export default function Home() {
   const [shortcode, setShortcode] = useState('');
   const [error, setError] = useState('');
   const [pastedText, setPastedText] = useState('');
+
   const redirectToExternalURL = () => {
     // Replace 'https://example.com' with the external URL you want to open in a new tab
     setTimeout(() => {
@@ -17,11 +18,11 @@ export default function Home() {
     }, 3000); // 3000 milliseconds (3 seconds) timeout
   };
   
-  const RedirectButton = () => {
     const handleClick = () => {
       redirectToExternalURL();
     };
   
+
   const ClipboardBtn = () => {
     if (!navigator.clipboard || !navigator.clipboard.readText) {
       setError('Longpress and paste URL');
@@ -182,7 +183,7 @@ export default function Home() {
 <div class="card-actions justify-center">
 <div class="badge badge-accent">Photo</div>
 
-      <a onClick={handleClick} href={`${item.node.display_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+      <a href={`${item.node.display_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
     </div>
     </div>
 </div>
@@ -205,7 +206,7 @@ export default function Home() {
     <div class="card-actions justify-center">
     <div class="badge badge-secondary">Photo</div>
 
-    <a href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+    <a onClick={handleClick} href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
     </div>
   </div>
 </div>
@@ -220,7 +221,7 @@ export default function Home() {
     <div class="card-actions justify-center">
     <div class="badge badge-secondary">Video</div>
 
-    <a href={`${data.video_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Video</a>
+    <a onClick={handleClick} href={`${data.video_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Video</a>
     </div>
   </div>
 </div>
