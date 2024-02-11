@@ -19,7 +19,7 @@ export default function Home() {
   
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/p/${shortcode}`);
+      const response = await fetch(`/api/${shortcode}`);
       const jsonData = await response.json();
       setData(jsonData);
     } catch (error) {
@@ -65,8 +65,14 @@ export default function Home() {
 
 
       {data ? (
+       
+        
+        
               <div > 
-                
+                {data.photo_url}
+
+                <a href={`/api/img?save=${encodeURIComponent(data.photo_url)}&filename=${data.author.username}`}>Download File</a>
+                <img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} width={500} height={500} />
                 {data.multiple ? (
                   
                   <ul>
@@ -80,7 +86,9 @@ export default function Home() {
       </div>
     ) : (
       <div>
-                <img width={500} height={500} src={item.node.display_url} />
+
+    <ImageDownloader imageUrl={item.node.display_url} />
+
         <a href={item.node.display_url} >Download Image</a>
         {item.node.accessibility_caption}
       </div>
