@@ -95,12 +95,17 @@ export default async function handler(req, res) {
         id: longid,
         shortid: shortcode,
         multiple: multi,
+        likes: responseData?.data?.xdt_shortcode_media?.edge_media_preview_like?.count,
+        comments: responseData?.data?.xdt_shortcode_media?.edge_media_to_comment?.count,
+        video_plays: responseData?.data?.xdt_shortcode_media?.video_play_count,
+        video_views: responseData?.data?.xdt_shortcode_media?.video_view_count,
         media : responseData?.data?.xdt_shortcode_media?.edge_sidecar_to_children?.edges,
         caption : responseData?.data?.xdt_shortcode_media?.accessibility_caption,
         is_video : responseData?.data?.xdt_shortcode_media?.is_video,
         photo_url: thumbnail,
         video_url : responseData?.data?.xdt_shortcode_media?.video_url,
         author: postedby,
+        responseData
       });
 
   } catch (error) {

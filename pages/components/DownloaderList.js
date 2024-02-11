@@ -3,8 +3,9 @@ import Link from 'next/link'
 export default function DownloaderList() {
     return (
       <>
+      
 <div className='containter md:m-5'>
-<div className='my-0 md:flex md:grid md:grid-cols-3 gap-2 justify-center'>
+<div className='my-0 lg:flex md:grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-2 justify-center'>
   
 <div class="card md:w-md bg-base-100 border shadow-xl">
   <div class="card-body">

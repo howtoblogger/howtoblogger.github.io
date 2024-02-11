@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import Hero from './components/Hero';
 import DownloaderList from './components/DownloaderList';
+import NumberFormatter from './components/Numb';
 
 export default function Home() {
   const [url, setUrl] = useState('');
@@ -76,7 +77,34 @@ export default function Home() {
 </div>
         
       </p>}
-      <Hero title={title} description={description} >
+
+
+      {data ? (
+<div>
+<div class="card w-full bg-base-100 shadow-xl">
+  <div class="card-body  justify-center">
+   <div class="avatar justify-center">
+  <div class="w-24 rounded-full">
+    <img src={`/api/img?save=${encodeURIComponent(data.author.profile_pic_url)}`} />
+  </div>
+</div>
+  <div class="flex justify-center">
+    <span class="pr-2 text-center">@{data.author.username}</span>
+<svg aria-label="Verified" class="w-4" fill="rgb(0, 149, 246)"  role="img" viewBox="0 0 40 40" ><title>Verified</title><path d="M19.998 3.094 14.638 0l-2.972 5.15H5.432v6.354L0 14.64 3.094 20 0 25.359l5.432 3.137v5.905h5.975L14.638 40l5.36-3.094L25.358 40l3.232-5.6h6.162v-6.01L40 25.359 36.905 20 40 14.641l-5.248-3.03v-6.46h-6.419L25.358 0l-5.36 3.094Zm7.415 11.225 2.254 2.287-11.43 11.5-6.835-6.93 2.244-2.258 4.587 4.581 9.18-9.18Z" fill-rule="evenodd"></path></svg>
+
+
+</div>
+<ul class="menu flex justify-center menu-horizontal">
+  <li><a>Followers: <NumberFormatter number={data.author.edge_followed_by.count}/></a> </li>
+  <li><a>Comments: <NumberFormatter number={data.comments}/></a></li>
+  <li><a>Likes: <NumberFormatter number={data.responseData.data.xdt_shortcode_media.edge_media_preview_like.count} />  </a></li>
+</ul>
+  </div>
+</div>
+  </div>
+
+):(
+  <Hero title={title} description={description} >
       <div className="relative">
       <form onSubmit={handleSubmit}>
          <input
@@ -94,76 +122,113 @@ export default function Home() {
         </form>
         </div>
         </Hero>
-        
+)}
 
-      {data ? (
-       
-        
-        
-       <div > 
-         {data.photo_url}
-         <a href={`${data.photo_url}&dl=1`}>Download File Server 1</a>
-         <img src={`/api/img?save=${encodeURIComponent(data.author.profile_pic_url)}`} width={500} height={500} />
 
-         <a href={`/api/img?save=${encodeURIComponent(data.photo_url)}&filename=${data.author.username}`}>Download File</a>
-         <img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} width={500} height={500} />
-         {data.multiple ? (
-           
-           <ul>
- {data.media.map((item, index) => (
-<div key={index}>
-<p>ID: {item.node.id}</p> 
+
+
+
+
+
+
+
+      
+
+{data && (
+<div className='flex flex-wrap overflow-hidden justify-center'>
+
+
+
+
+{data.multiple ? (
+
+
+<>
+{data.media.map((item, index) => (
+ <div className="w-1/2 px-1 my-1 sm:w-1/2 sm:px-1 sm:my-1 md:w-1/3 md:px-1 md:my-1 lg:w-1/4 lg:px-1 lg:my-1 xl:w-1/4 xl:px-1 xl:my-1">
+
+<div key={index} class="card card-compact w-full bg-base-100 shadow-xl">
+  
 {item.node.__typename === "XDTGraphVideo" ? (
 <div>
- <video width="320" height="240" controls>
-<source src={item.node.video_url} type="video/mp4"/>
-</video>
-<a href={`${item.node.video_url}&dl=1`}>Download Video</a>
- {item.node.accessibility_caption}
+<figure>
+    <img className='object-contain  w-72 h-40' src={`/api/img?save=${encodeURIComponent(item.node.display_url)}`} alt={item.node.accessibility_caption} />
+    </figure>
+    <div class="card-body">
+<div class="card-actions justify-center">
+<div class="badge badge-secondary">Video</div>
+
+      <a href={`${item.node.video_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Video</a>
+    </div>
+    </div>
 </div>
 ) : (
 <div>
+<figure>
+    <img className='object-contain  w-72 h-40' src={`/api/img?save=${encodeURIComponent(item.node.display_url)}`} alt={item.node.accessibility_caption} />
+    </figure>
+    <div class="card-body">
+<div class="card-actions justify-center">
+<div class="badge badge-accent">Photo</div>
 
-
- <a href={item.node.display_url} >Download Image</a>
- {item.node.accessibility_caption}
+      <a href={`${item.node.display_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+    </div>
+    </div>
 </div>
+
 )}
-<p>Shortcode: {item.node.shortcode}</p>
+</div>
 </div>
 ))}
 
-         </ul>
+        </>
+        ): data.is_video === false ? (
 
 
+          
+<div className='flex flex-wrap overflow-hidden justify-center'>
+ <div className="w-1/2 px-1 my-1 sm:w-1/2 sm:px-1 sm:my-1 md:w-1/3 md:px-1 md:my-1 lg:w-1/4 lg:px-1 lg:my-1 xl:w-1/2 xl:px-1 xl:my-1">
+<div class="card card-compact w-lg bg-base-100 shadow-xl">
+  <figure><img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} alt={data.caption} /></figure>
+  <div class="card-body">
+    <div class="card-actions justify-center">
+    <div class="badge badge-secondary">Photo</div>
+
+    <a href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+    </div>
+  </div>
+</div>
+ </div>
+ </div>
+        ) : 
+        <div className='flex flex-wrap overflow-hidden justify-center'>
+ <div className="w-1/2 px-1 my-1 sm:w-1/2 sm:px-1 sm:my-1 md:w-1/3 md:px-1 md:my-1 lg:w-1/4 lg:px-1 lg:my-1 xl:w-1/2 xl:px-1 xl:my-1">
+<div class="card card-compact w-lg bg-base-100 shadow-xl">
+  <figure><img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} alt={data.caption} /></figure>
+  <div class="card-body">
+    <div class="card-actions justify-center">
+    <div class="badge badge-secondary">Video</div>
+
+    <a href={`${data.video_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+    </div>
+  </div>
+</div>
+ </div>
+ </div>
+
+        }
+</div>
+)}
+
+        
 
 
-         ) : (
-           null
-         )}
+        
 
-         <a className='text-white bg-gradient-to-r from-pink-500 to-purple-500 btn  btn-block' href={`instagram://media?id=${data.shortid}`}>
-           Go back to Instagram Post
-         </a>
-       </div>
-     ) : null}
+
+    
       <DownloaderList />
-      <div>
-        <h1>Extract Shortcode from Instagram URL</h1>
-        
-        <progress className="progress w-56" value="50" max="100"></progress>
-
-        {shortcode && (
-          <div>
-            <h2>Shortcode:</h2>
-            <p>{shortcode}</p>
-          </div>
-        )}
-
-        
-
-        {/* Remaining JSX code */}
-      </div>
+    
     </Layout>
   );
 }
