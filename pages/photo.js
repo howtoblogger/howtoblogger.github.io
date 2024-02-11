@@ -45,7 +45,7 @@ export default function Photo() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`/api/p/${photoId}`);
+      const response = await fetch(`/api/${photoId}`);
       const jsonData = await response.json();
       setData(jsonData);
       document.getElementById('my_modal_1').showModal();

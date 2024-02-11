@@ -5,6 +5,16 @@ export default async function handler(req, res) {
   // Extract id from the request query
   const { id } = req.query;
 
+  const convertToBase64 = async () => {
+    try {
+      const response = await axios.get(`/api/image?imageUrl=${encodeURIComponent(imageUrl)}`);
+      setBase64Image(response.data.base64Image);
+    } catch (error) {
+      console.error('Error converting image to base64:', error);
+    }
+  };
+
+
   // Define the Instagram API URL
   const API_URL = "https://www.instagram.com/api/graphql";
 
@@ -74,11 +84,21 @@ export default async function handler(req, res) {
     });
     
     
+
+
+
+
         // Extracting id and thumbnail_src from the Instagram API response
         const responseData = response.data;
         const shortcode = responseData?.data?.xdt_shortcode_media?.shortcode;
         const longid = responseData?.data?.xdt_shortcode_media?.id;
+
         const thumbnail = responseData?.data?.xdt_shortcode_media?.display_url;
+        const encodedthumbnail = encodeURIComponent(thumbnail);
+
+        const devideo = responseData && responseData?.data?.xdt_shortcode_media?.video_url;
+        const encodedvideo = encodeURIComponent(devideo);
+
         const postedby = responseData?.data?.xdt_shortcode_media?.owner;
         let multi;
         if (responseData?.data?.xdt_shortcode_media?.edge_sidecar_to_children) {
@@ -98,8 +118,8 @@ export default async function handler(req, res) {
         media : responseData?.data?.xdt_shortcode_media?.edge_sidecar_to_children?.edges,
         caption : responseData?.data?.xdt_shortcode_media?.accessibility_caption,
         is_video : responseData?.data?.xdt_shortcode_media?.is_video,
-        photo_url: thumbnail,
-        video_url : responseData?.data?.xdt_shortcode_media?.video_url,
+        photo_url: encodedthumbnail,
+        video_url: encodedvideo && null,
         author: postedby,
       });
 
