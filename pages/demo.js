@@ -3,53 +3,41 @@ import Layout from './components/Layout';
 import Hero from './components/Hero';
 import DownloaderList from './components/DownloaderList';
 import NumberFormatter from './components/Numb';
+import { useRouter } from 'next/router';
 
-export default function Home() {
+export default function Home (req, res) {
+  const router = useRouter();
+  const [igurl, setIgurl] = useState('');
   const [url, setUrl] = useState('');
   const [data, setData] = useState(null);
   const [shortcode, setShortcode] = useState('');
   const [error, setError] = useState('');
-  const [pastedText, setPastedText] = useState('');
 
-  const redirectToExternalURL = () => {
-    // Replace 'https://example.com' with the external URL you want to open in a new tab
-    setTimeout(() => {
-      window.open('https://www.oksurya.com/', 'newWindow', 'width=5,height=5');
-    }, 3000); // 3000 milliseconds (3 seconds) timeout
-  };
-  
-    const handleClick = () => {
-      redirectToExternalURL();
-    };
-  
-
-  const ClipboardBtn = () => {
-    if (!navigator.clipboard || !navigator.clipboard.readText) {
-      setError('Longpress and paste URL');
-      return;
-    }
-    navigator.clipboard.readText().then((text) => {
-      setPastedText(text);
-      const matches = url.match(/(?:\/(?:p|reel|[\w-]+)\/)([A-Za-z0-9-_]+)/);
-      if (matches && matches.length > 1) {
-        setShortcode(matches[1]);
-        setError('');
-      } else {
-        setError('');
-      }
-    }).catch((error) => {
-      console.error('Failed to read clipboard contents: ', error);
-    });
-  };
   
   const title = 'Instagram Photo Download';
   const description = 'Save Instagram Photos quickly and easily with our efficient downloader tool.';
 
+ 
+
   useEffect(() => {
+    const { igurl } = router.query;
+    if (igurl) {
+      setIgurl(igurl);
+      const regex = /(?:\/(?:p|reel|[\w-]+)\/)([A-Za-z0-9-_]+)/;
+      const match = igurl.match(regex);
+      if (match) {
+        setShortcode(match[1]);
+      } else {
+        setShortcode('');
+        setIgurl('');
+        setError('Post Not Found or Enter URL correctly');
+      }
+    }
     if (shortcode) {
       fetchData();
     }
-  }, [shortcode]);
+   
+  }, [shortcode,router.query]);
 
   const fetchData = async () => {
     try {
@@ -59,7 +47,6 @@ export default function Home() {
       }
       const jsonData = await response.json();
       setData(jsonData);
-
       setError(''); // Reset error if fetch is successful
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -71,7 +58,7 @@ export default function Home() {
     e.preventDefault();
     
     const regex = /(?:\/(?:p|reel|[\w-]+)\/)([A-Za-z0-9-_]+)/;
-    const match = pastedText.match(regex);
+    const match = url.match(regex);
     if (match) {
       setShortcode(match[1]);
     } else {
@@ -79,7 +66,13 @@ export default function Home() {
       setError('Shortcode not found');
     }
   };
-
+  const handlePasteFromClipboard = () => {
+    navigator.clipboard.readText().then((text) => {
+      setUrl(text);
+    }).catch((error) => {
+      console.error('Failed to read clipboard contents: ', error);
+    });
+  };
   return (
     <Layout title={title} description={description}>
       {error && 
@@ -94,7 +87,36 @@ export default function Home() {
 
       {data ? (
 <div>
-<div class="card w-full bg-base-100 shadow-xl">
+  {igurl & (
+    <div>
+<Hero title={title} description={description} >
+      <div className="relative">
+      <form onSubmit={handleSubmit}>
+      <div class="join">
+  <input
+  className=" input input-lg w-full join-item input-bordered"
+  type="text"
+  value={url}
+  onChange={(e) => {
+    setUrl(e.target.value);
+  }}
+  placeholder="Enter Instagram URL"
+/>
+  <button onClick={handlePasteFromClipboard} class="btn bg-none btn-lg join-item">
+    <svg stroke="currentColor" className='w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"></path></svg>
+  </button>
+  <button type="submit" class="bg-primary btn btn-lg join-item">
+  <svg stroke="currentColor" className='text-white w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="M3 19H21V21H3V19ZM13 13.1716L19.0711 7.1005L20.4853 8.51472L12 17L3.51472 8.51472L4.92893 7.1005L11 13.1716V2H13V13.1716Z"></path></svg>  </button>
+</div>
+      
+        </form>
+
+        </div>
+        </Hero>
+    </div>
+  )}
+
+<div class="card w-full bg-base-100 ">
   <div class="card-body  justify-center">
    <div class="avatar justify-center">
   <div class="w-24 rounded-full">
@@ -118,22 +140,24 @@ export default function Home() {
 
 ):(
   <Hero title={title} description={description} >
-      <div className="relative">
-      <form onSubmit={handleSubmit}>
-         <input
-  className=" input input-lg w-full input-bordered"
+  
+      <div class="join w-full">
+  <input
+  className="input input-lg w-full join-item input-bordered"
   type="text"
-  value={pastedText}
-  onFocus={ClipboardBtn}
+  value={url}
   onChange={(e) => {
     setUrl(e.target.value);
   }}
   placeholder="Enter Instagram URL"
 />
-
-          <button className='mt-4 btn btn-primary btn-lg btn-wide' type="submit">Download</button>
-        </form>
-        </div>
+  <button onClick={handlePasteFromClipboard} class="btn bg-none btn-lg join-item">
+    <svg stroke="currentColor" className='w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"></path></svg>
+  </button>
+  <button onClick={handleSubmit} class="bg-primary btn btn-lg join-item">
+  <svg stroke="currentColor" className='text-white w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="M3 19H21V21H3V19ZM13 13.1716L19.0711 7.1005L20.4853 8.51472L12 17L3.51472 8.51472L4.92893 7.1005L11 13.1716V2H13V13.1716Z"></path></svg>  </button>
+</div>
+      
         </Hero>
 )}
 
@@ -165,6 +189,7 @@ export default function Home() {
 {item.node.__typename === "XDTGraphVideo" ? (
 <div>
 <figure>
+  
     <img className='object-contain  w-72 h-40' src={`/api/img?save=${encodeURIComponent(item.node.display_url)}`} alt={item.node.accessibility_caption} />
     </figure>
     <div class="card-body">
@@ -200,14 +225,14 @@ export default function Home() {
 
           
 <div className='flex flex-wrap overflow-hidden justify-center'>
- <div className="w-1/2 px-1 my-1 sm:w-1/2 sm:px-1 sm:my-1 md:w-1/3 md:px-1 md:my-1 lg:w-1/4 lg:px-1 lg:my-1 xl:w-1/2 xl:px-1 xl:my-1">
+ <div className="">
 <div class="card card-compact w-lg bg-base-100 shadow-xl">
-  <figure><img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} alt={data.caption} /></figure>
+  <figure><img className='object-contain  w-full h-40' src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} alt={data.caption} /></figure>
   <div class="card-body">
     <div class="card-actions justify-center">
     <div class="badge badge-secondary">Photo</div>
 
-    <a  href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
+    <a href={`${data.photo_url}&dl=1`} target="_blank" class="btn btn-block btn-primary">Download Photo</a>
     </div>
   </div>
 </div>
@@ -215,9 +240,11 @@ export default function Home() {
  </div>
         ) : 
         <div className='flex flex-wrap overflow-hidden justify-center'>
- <div className="w-1/2 px-1 my-1 sm:w-1/2 sm:px-1 sm:my-1 md:w-1/3 md:px-1 md:my-1 lg:w-1/4 lg:px-1 lg:my-1 xl:w-1/2 xl:px-1 xl:my-1">
+ <div className="">
 <div class="card card-compact w-lg bg-base-100 shadow-xl">
-  <figure><img src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} alt={data.caption} /></figure>
+  
+  <figure><img className='object-contain  w-full h-40' src={`/api/img?save=${encodeURIComponent(data.photo_url)}`} alt={data.caption} /></figure>
+  
   <div class="card-body">
     <div class="card-actions justify-center">
     <div class="badge badge-secondary">Video</div>
@@ -240,7 +267,7 @@ export default function Home() {
 
 
     
-      <DownloaderList />
+      
     
     </Layout>
   );
