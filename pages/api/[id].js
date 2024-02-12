@@ -92,9 +92,7 @@ export default async function handler(req, res) {
     // Sending the Instagram API response back to the client
     res.status(200).json(
       { 
-        id: longid,
-        shortid: shortcode,
-        multiple: multi,
+        id: longid || 'nopost',
         likes: responseData?.data?.xdt_shortcode_media?.edge_media_preview_like?.count,
         comments: responseData?.data?.xdt_shortcode_media?.edge_media_to_comment?.count,
         video_plays: responseData?.data?.xdt_shortcode_media?.video_play_count,
@@ -105,7 +103,6 @@ export default async function handler(req, res) {
         photo_url: thumbnail,
         video_url : responseData?.data?.xdt_shortcode_media?.video_url,
         author: postedby,
-        responseData
       });
 
   } catch (error) {
