@@ -13,13 +13,14 @@ export default function Layout({ children,title,description }) {
        <meta name="description" content={description} />
         <link rel="icon" href="logo.png" />
       </Head>
+      <div className='container lg:px-40  mx-auto' >
     <Header/>
 
     <NextNProgress color="radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%)" showOnShallow={true} height={3} />
 
    
       <main >{children}</main>
- 
+      </div>
 
     </>
   )

@@ -15,7 +15,7 @@ export default function Home (req, res) {
   const [loading, setLoading] = useState(false);
 
   
-  const title = 'Instagram Photo Download';
+  const title = 'Instagram Pro Downloader';
   const description = 'Save Instagram Photos quickly and easily with our efficient downloader tool.';
 
  
@@ -174,19 +174,20 @@ export default function Home (req, res) {
   }}
   placeholder="Enter Instagram URL"
 />
-  <button onClick={handlePasteFromClipboard} class="btn bg-none btn-lg join-item">
+  <button onClick={handlePasteFromClipboard} class="btn btn-lg join-item">
     <svg stroke="currentColor" className='w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"></path></svg>
   </button>
-  <button onClick={handleSubmit} class="bg-primary btn btn-lg join-item">
+  <button onClick={handleSubmit} class=" btn btn-lg join-item">
+  <span className='lg:block hidden'>Download</span>
   {loading ? 
     <span class="loading loading-spinner bg-gradient-to-r from-green-300 to-blue-300 via-red-500 to-purple-600"></span>
 
   : 
-  <svg stroke="currentColor" className='text-white w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="M3 19H21V21H3V19ZM13 13.1716L19.0711 7.1005L20.4853 8.51472L12 17L3.51472 8.51472L4.92893 7.1005L11 13.1716V2H13V13.1716Z"></path></svg>
+  <svg stroke="currentColor" className=' w-7' fill="currentColor" stroke-width="0" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="M3 19H21V21H3V19ZM13 13.1716L19.0711 7.1005L20.4853 8.51472L12 17L3.51472 8.51472L4.92893 7.1005L11 13.1716V2H13V13.1716Z"></path></svg>
 }
     </button>
 </div>
-      
+
         </Hero>
 )}
 

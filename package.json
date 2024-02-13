@@ -18,7 +18,8 @@
     "nprogress": "^0.2.0",
     "query-string": "^8.2.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "ytdl-core": "^4.11.5"
   },
   "devDependencies": {
     "@types/node": "20.11.17",
