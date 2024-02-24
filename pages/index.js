@@ -163,7 +163,6 @@ export default function Home (req, res) {
 
 ):(
   <Hero title={title} description={description} >
-  
       <div class="join w-full " data-tip="hello">
   <input
   className="input input-lg w-full join-item input-bordered"
