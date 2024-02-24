@@ -23,7 +23,7 @@ export default function Header() {
 </a>
   </div>
   <div class="navbar-end">
-<a class="btn btn-outline bg-primary text-white" target='blank' href='https://www.instagram.com/jayasurya.ig/'>Buy Script ₹1199</a>
+<a class="btn btn-outline bg-primary text-white" target='blank' href='https://www.instagram.com/jayasurya.ig/'>Buy ₹1199</a>
 
   </div>
 </div>
