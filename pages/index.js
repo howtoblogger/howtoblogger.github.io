@@ -16,7 +16,7 @@ export default function Home (req, res) {
 
   
   const title = 'Instagram Pro Downloader';
-  const description = 'Save Instagram Photos quickly and easily with our efficient downloader tool.';
+  const description = 'Save Instagram Photos, Videos, Reels quickly and easily with our efficient downloader tool.';
 
  
 
