@@ -3,6 +3,7 @@ import Footer from './Footer'
 import Head from 'next/head';
 import '../../styles/main.css'
 import NextNProgress from 'nextjs-progressbar';
+import DownloaderList from './DownloaderList';
 
 export default function Layout({ children,title,description }) {
   return (
@@ -20,6 +21,7 @@ export default function Layout({ children,title,description }) {
 
    
       <main >{children}</main>
+      <DownloaderList/>
       </div>
 
     </>
